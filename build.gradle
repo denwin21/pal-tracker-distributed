@@ -27,9 +27,14 @@ buildscript {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
         classpath "mysql:mysql-connector-java:$mysqlVersion"
     }
+
+
+
 }
 
 apply plugin: DependenciesGraphPlugin
+//apply plugin: 'org.springframework.boot'
+
 
 subprojects {
     group "io.pivotal.pal.tracker"
@@ -59,4 +64,7 @@ subprojects {
             exceptionFormat = 'full'
         }
     }
+
+
+
 }

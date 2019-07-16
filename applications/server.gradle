@@ -21,3 +21,7 @@ dependencies {
 
     testCompile project(":components:test-support")
 }
+
+bootRun.environment([
+        "MANAGEMENT_ENDPOINT_HEALTH_SHOWDETAILS": "always",
+])

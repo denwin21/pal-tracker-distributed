@@ -1,0 +1,4 @@
+
+siege -c255 --content-type "application/json" 'https://allocations-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/allocations POST {"projectId": "2", "userId": "1", "firstDay": "2015-05-17", "lastDay": "2015-05-18"}'
+siege -c255 --content-type "application/json" 'https://timesheets-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/time-entries POST {"projectId": 1, "userId": 1, "date": "2015-05-17", "hours": 6}'
+siege -c255 --content-type "application/json"         'https://backlog-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/stories POST {"projectId": 1, "name": "Find some reeds"}'

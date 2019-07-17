@@ -9,8 +9,10 @@ applications:
     JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+ } }'
     MANAGEMENT_ENDPOINT_HEALTH_SHOWDETAILS: always
     GRANT_TYPE: client_credentials
+    MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: *
   services:
   - tracker-backlog-database
   - tracker-service-registry
   - tracker-circuit-breaker-dashboard
   - tracker-sso
+  - tracker-config-server

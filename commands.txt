@@ -1,0 +1,61 @@
+
+curl -i -XPOST -H"Content-Type: application/json" https://registration-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/registration -d'{"name": "Pete"}'
+curl -i https://registration-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/users/1
+curl -i https://registration-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/accounts?ownerId=1
+curl -i -XPOST -H"Content-Type: application/json" https://registration-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/projects -d"{\"name\": \"Basket Weaving\", \"accountId\": 1}"
+curl -i https://registration-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/projects?accountId=1
+
+curl -i -XPOST -H"Content-Type: application/json" https://allocations-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/allocations -d"{\"projectId\": 1, \"userId\": 1, \"firstDay\": \"2015-05-17\", \"lastDay\": \"2015-05-18\"}"
+curl -i https://allocations-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/allocations?projectId=1
+
+curl -i -XPOST -H"Content-Type: application/json" https://backlog-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/stories -d"{\"projectId\": 1, \"name\": \"Find some reeds\"}"
+curl -i https://backlog-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/stories?projectId=1
+
+curl -i -XPOST -H"Content-Type: application/json" https://timesheets-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/time-entries/ -d"{\"projectId\": 1, \"userId\": 1, \"date\": \"2015-05-17\", \"hours\": 6}"
+curl -i https://timesheets-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/time-entries?userId=1
+
+
+https://allocations-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/ - 8081
+https://backlog-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/ - 8082
+https://registration-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/ - 8083
+https://timesheets-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/ - 8084
+
+
+./gradlew cloudNativeDeveloperDistributedSystemWithServiceDiscovery \
+    -PregistrationServerUrl=https://registration-pal-tracker-john-dennis.apps.evans.pal.pivotal.io \
+    -PbacklogServerUrl=https://backlog-pal-tracker-john-dennis.apps.evans.pal.pivotal.io \
+    -PallocationsServerUrl=https://allocations-pal-tracker-john-dennis.apps.evans.pal.pivotal.io \
+    -PtimesheetsServerUrl=https://timesheets-pal-tracker-john-dennis.apps.evans.pal.pivotal.io
+
+
+
+
+curl -i -XPOST -H"Content-Type: application/json" localhost:8083/projects -d"{\"name\": \"Project A\", \"accountId\": \"1\"}"
+curl -i -XPOST -H"Content-Type: application/json" localhost:8083/projects -d"{\"name\": \"Project B\", \"accountId\": \"1\"}"
+
+
+curl -i -XPOST -H"Content-Type: application/json" localhost:8081/allocations/ -d"{\"projectId\": \"2\", \"userId\": \"1\", \"firstDay\": \"2015-05-17\", \"lastDay\": \"2015-05-18\"}"
+
+
+curl -i -XPOST -H"Content-Type: application/json" localhost:8081/allocations/ -d"{\"projectId\": \"3\", \"userId\": \"1\", \"firstDay\": \"2015-05-17\", \"lastDay\": \"2015-05-18\"}"
+
+
+
+
+curl -i -XPOST -H"Content-Type: application/json" https://registration-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/projects -d"{\"name\": \"Project A\", \"accountId\": \"1\"}"
+curl -i -XPOST -H"Content-Type: application/json" https://registration-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/projects -d"{\"name\": \"Project B\", \"accountId\": \"1\"}"
+
+
+curl -i -XPOST -H"Content-Type: application/json" https://allocations-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/allocations/ -d"{\"projectId\": \"2\", \"userId\": \"1\", \"firstDay\": \"2015-05-17\", \"lastDay\": \"2015-05-18\"}"
+
+
+curl -i -XPOST -H"Content-Type: application/json" https://allocations-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/allocations/ -d"{\"projectId\": \"3\", \"userId\": \"1\", \"firstDay\": \"2015-05-17\", \"lastDay\": \"2015-05-18\"}"
+
+
+
+     "auth_domain": "https://login.sys.evans.pal.pivotal.io",
+     "client_id": "47683f02-b1d5-4e3d-bb11-bd81a62a8b86",
+     "client_secret": "83a69462-56fe-4517-a61f-c34aaf842106"
+
+
+curl -k "https://login.sys.evans.pal.pivotal.io/oauth/token" -i -u "47683f02-b1d5-4e3d-bb11-bd81a62a8b86:83a69462-56fe-4517-a61f-c34aaf842106" -X POST -H 'Accept: application/json' -H 'Content-Type: application/x-www-form-urlencoded' -d 'grant_type=client_credentials&response_type=token'

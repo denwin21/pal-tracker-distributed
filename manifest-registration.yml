@@ -9,7 +9,7 @@ applications:
     JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+ } }'
     MANAGEMENT_ENDPOINT_HEALTH_SHOWDETAILS: always
     GRANT_TYPE: client_credentials
-    MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: *
+    MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "*"
   services:
   - tracker-registration-database
   - tracker-service-registry

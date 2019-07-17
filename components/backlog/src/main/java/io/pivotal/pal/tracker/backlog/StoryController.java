@@ -19,6 +19,8 @@ public class StoryController {
     private final StoryDataGateway gateway;
     private final ProjectClient client;
 
+
+
     public StoryController(StoryDataGateway gateway, ProjectClient client) {
         this.gateway = gateway;
         this.client = client;
@@ -33,6 +35,14 @@ public class StoryController {
         }
 
         return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+
+    @GetMapping("/recent")
+    public List<StoryInfo> listRecent() {
+        return gateway.findMostRecent().stream()
+                .map(this::present)
+                .collect(toList());
     }
 
     @GetMapping

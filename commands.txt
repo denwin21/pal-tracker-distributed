@@ -46,7 +46,7 @@ curl -i -XPOST -H"Content-Type: application/json" https://registration-pal-track
 curl -i -XPOST -H"Content-Type: application/json" https://registration-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/projects -d"{\"name\": \"Project B\", \"accountId\": \"1\"}"
 
 
-curl -i -XPOST -H"Content-Type: application/json" https://allocations-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/allocations/ -d"{\"projectId\": \"2\", \"userId\": \"1\", \"firstDay\": \"2015-05-17\", \"lastDay\": \"2015-05-18\"}"
+curl -i -XPOST -H"Content-Type: application/json" https://allocations-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/allocations/ -d"{\"projectId\": \"2\", \"userId\": \"1\", \"firstDay\": \"2015-05-17\", \"lastDay\": \"2015-05-18\"}" -H"Authorization: Bearer $BEARER_TOKEN"
 
 
 curl -i -XPOST -H"Content-Type: application/json" https://allocations-pal-tracker-john-dennis.apps.evans.pal.pivotal.io/allocations/ -d"{\"projectId\": \"3\", \"userId\": \"1\", \"firstDay\": \"2015-05-17\", \"lastDay\": \"2015-05-18\"}"
@@ -59,3 +59,26 @@ curl -i -XPOST -H"Content-Type: application/json" https://allocations-pal-tracke
 
 
 curl -k "https://login.sys.evans.pal.pivotal.io/oauth/token" -i -u "47683f02-b1d5-4e3d-bb11-bd81a62a8b86:83a69462-56fe-4517-a61f-c34aaf842106" -X POST -H 'Accept: application/json' -H 'Content-Type: application/x-www-form-urlencoded' -d 'grant_type=client_credentials&response_type=token'
+
+
+
+curl 'http://localhost:8999/oauth/token' -i -u 'tracker-client:supersecret' -X POST -H 'Accept: application/json' -H 'Content-Type: application/x-www-form-urlencoded' -d 'grant_type=client_credentials&response_type=token&token_format=opaque'
+
+-H"Authorization: Bearer $BEARER_TOKEN"
+BEARER_TOKEN=cd70da26-88f8-4f20-870e-580ec3eedbd1
+BEARER_TOKEN=eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHBzOi8vdWFhLnN5cy5ldmFucy5wYWwucGl2b3RhbC5pby90b2tlbl9rZXlzIiwia2lkIjoia2V5LTEiLCJ0eXAiOiJKV1QifQ.eyJqdGkiOiJjNjgyNDZiNWVhOGI0N2Y4YWYzODdmOGNlNzAyNzkzOCIsInN1YiI6IjQ3NjgzZjAyLWIxZDUtNGUzZC1iYjExLWJkODFhNjJhOGI4NiIsImF1dGhvcml0aWVzIjpbInVhYS5yZXNvdXJjZSJdLCJzY29wZSI6WyJ1YWEucmVzb3VyY2UiXSwiY2xpZW50X2lkIjoiNDc2ODNmMDItYjFkNS00ZTNkLWJiMTEtYmQ4MWE2MmE4Yjg2IiwiY2lkIjoiNDc2ODNmMDItYjFkNS00ZTNkLWJiMTEtYmQ4MWE2MmE4Yjg2IiwiYXpwIjoiNDc2ODNmMDItYjFkNS00ZTNkLWJiMTEtYmQ4MWE2MmE4Yjg2IiwiZ3JhbnRfdHlwZSI6ImNsaWVudF9jcmVkZW50aWFscyIsInJldl9zaWciOiI3NjgyMGQ4ZiIsImlhdCI6MTU2MzM3NjAzOCwiZXhwIjoxNTYzNDE5MjM4LCJpc3MiOiJodHRwczovL3VhYS5zeXMuZXZhbnMucGFsLnBpdm90YWwuaW8vb2F1dGgvdG9rZW4iLCJ6aWQiOiJ1YWEiLCJhdWQiOlsiNDc2ODNmMDItYjFkNS00ZTNkLWJiMTEtYmQ4MWE2MmE4Yjg2IiwidWFhIl19.t2LShnIgp9HqzzAaLwT3Q7n7hsKWZH1cqWuotUUOSoupXupBiq_eqv4lWq6PUkmtk8NLUcoo2_OEPbN07XndXKzFWQ1MmzLWgep6-sUNwk_B6tOa-3kDXD9Md4l3npqDTnaQLrXEFP7666xOTyftm-o9w7iGHpQzP1PLno4nT3L_zAY9EiV6M872aYX-iuBC-RLC0wOcrEQ2XeedcGrfMURDW09tY22x5dZmYELDVWtMDbtJfFWGxaK6wbxg0ammi83RMIodKylzZsugA9VKroMAJiF6wPFzc6VBKWZPH-583t0DDNjsPY9sT0cV59SI-QRleieQUT8Xo96VeWUnPA
+
+curl -i -XGET -H"Content-Type: application/json" localhost:8082/stories/recent -H"Authorization: Bearer $BEARER_TOKEN"
+curl -i -XPOST -H"Content-Type: application/json" localhost:8082/stories -d"{\"projectId\": 1, \"name\": \"Find some reeds6\"}" -H"Authorization: Bearer $BEARER_TOKEN"
+
+
+./gradlew cloudNativeDeveloperDistributedSystemWithConfigServer \
+    -PuaaUrl=https://login.sys.evans.pal.pivotal.io \
+    -PclientId=47683f02-b1d5-4e3d-bb11-bd81a62a8b86 \
+    -PclientSecret=83a69462-56fe-4517-a61f-c34aaf842106 \
+    -PregistrationServerUrl=https://registration-pal-tracker-john-dennis.apps.evans.pal.pivotal.io \
+    -PbacklogServerUrl=https://backlog-pal-tracker-john-dennis.apps.evans.pal.pivotal.io \
+    -PallocationsServerUrl=https://allocations-pal-tracker-john-dennis.apps.evans.pal.pivotal.io \
+    -PtimesheetsServerUrl=https://timesheets-pal-tracker-john-dennis.apps.evans.pal.pivotal.io
+
+    SELECT * FROM table ORDER BY id DESC LIMIT 5;

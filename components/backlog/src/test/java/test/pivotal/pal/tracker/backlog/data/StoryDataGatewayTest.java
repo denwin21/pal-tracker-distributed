@@ -6,6 +6,7 @@ import io.pivotal.pal.tracker.backlog.data.StoryRecord;
 import io.pivotal.pal.tracker.testsupport.TestScenarioSupport;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class StoryDataGatewayTest {
 
     private TestScenarioSupport testScenarioSupport = new TestScenarioSupport("tracker_backlog_test");
     private JdbcTemplate template = testScenarioSupport.template;
-    private StoryDataGateway gateway = new StoryDataGateway(testScenarioSupport.dataSource);
+    private StoryDataGateway gateway = new StoryDataGateway(testScenarioSupport.dataSource,5);
 
     @Before
     public void setUp() throws Exception {
@@ -61,6 +62,28 @@ public class StoryDataGatewayTest {
                 .projectId(22L)
                 .name("aStory")
                 .build()
+        );
+    }
+
+    @Test
+    public void testFindRecent() {
+        template.execute("insert into stories (id, project_id, name) values (1346, 22, 'aStory')");
+        template.execute("insert into stories (id, project_id, name) values (1347, 23, 'aStory2')");
+        template.execute("insert into stories (id, project_id, name) values (1348, 24, 'aStory3')");
+        template.execute("insert into stories (id, project_id, name) values (1349, 25, 'aStory4')");
+        template.execute("insert into stories (id, project_id, name) values (1350, 26, 'aStory5')");
+        template.execute("insert into stories (id, project_id, name) values (1351, 21, 'aStory6')");
+
+
+        List<StoryRecord> result = gateway.findMostRecent();
+
+        assertThat(result.size()==5);
+        assertThat(result).contains(
+                storyRecordBuilder()
+                        .id(1347L)
+                        .projectId(23L)
+                        .name("aStory2")
+                        .build()
         );
     }
 }

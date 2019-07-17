@@ -1,5 +1,6 @@
 package io.pivotal.pal.tracker.backlog.data;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -17,7 +18,10 @@ import static java.sql.Statement.RETURN_GENERATED_KEYS;
 public class StoryDataGateway {
     private final JdbcTemplate jdbcTemplate;
 
-    public StoryDataGateway(DataSource dataSource) {
+    private int limit;
+
+    public StoryDataGateway(DataSource dataSource, @Value("${recent.stories.limit:1}") int limit) {
+        this.limit = limit;
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
@@ -37,7 +41,7 @@ public class StoryDataGateway {
         return find(keyHolder.getKey().longValue());
     }
 
-    public List<StoryRecord> findAllByProjectId(Long projectId) {
+    public List<StoryRecord> findAllByProjectId(long projectId) {
         return jdbcTemplate.query(
             "select id, project_id, name from stories where project_id = ?",
             rowMapper, projectId
@@ -58,4 +62,11 @@ public class StoryDataGateway {
         .projectId(rs.getLong("project_id"))
         .name(rs.getString("name"))
         .build();
+
+    public List<StoryRecord> findMostRecent() {
+        return jdbcTemplate.query(
+                "select id, project_id, name from stories order by id DESC LIMIT ?",
+                rowMapper, limit
+        );
+    }
 }

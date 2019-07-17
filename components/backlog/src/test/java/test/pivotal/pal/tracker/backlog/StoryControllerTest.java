@@ -78,8 +78,8 @@ public class StoryControllerTest {
     @Test
     public void testList() {
         List<StoryRecord> records = asList(
-            testStoryRecordBuilder().id(12L).build(),
-            testStoryRecordBuilder().id(13L).build()
+                testStoryRecordBuilder().id(12L).build(),
+                testStoryRecordBuilder().id(13L).build()
         );
 
         doReturn(records).when(storyDataGateway).findAllByProjectId(anyLong());
@@ -91,8 +91,32 @@ public class StoryControllerTest {
         verify(storyDataGateway).findAllByProjectId(13L);
 
         assertThat(result).containsExactlyInAnyOrder(
-            testStoryInfoBuilder().id(12L).build(),
-            testStoryInfoBuilder().id(13L).build()
+                testStoryInfoBuilder().id(12L).build(),
+                testStoryInfoBuilder().id(13L).build()
+        );
+    }
+
+    @Test
+    public void testListRecent() {
+        List<StoryRecord> records = asList(
+                testStoryRecordBuilder().id(12L).build(),
+                testStoryRecordBuilder().id(13L).build(),
+                testStoryRecordBuilder().id(14L).build(),
+                testStoryRecordBuilder().id(15L).build(),
+                testStoryRecordBuilder().id(16L).build(),
+                testStoryRecordBuilder().id(17L).build()
+        );
+
+
+
+        List<StoryInfo> result = storyController.listRecent();
+
+
+        verify(storyDataGateway).findAllByProjectId(13L);
+
+        assertThat(result).contains(
+                testStoryInfoBuilder().id(12L).build(),
+                testStoryInfoBuilder().id(13L).build()
         );
     }
 }

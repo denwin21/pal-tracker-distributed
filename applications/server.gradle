@@ -8,6 +8,9 @@ dependencyManagement {
 }
 
 dependencies {
+    compile "org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:$springSecurityOAuthAutoconfigVersion"
+    compile "io.pivotal.spring.cloud:spring-cloud-sso-connector:$springCloudSsoVersion"
+    
     compile project(":components:rest-support")
 
     compile "org.springframework.boot:spring-boot-starter-web"
@@ -24,4 +27,7 @@ dependencies {
 
 bootRun.environment([
         "MANAGEMENT_ENDPOINT_HEALTH_SHOWDETAILS": "always",
+        "APPLICATION_OAUTH_ENABLED": true,
+        "SECURITY_OAUTH2_CLIENT_CLIENT_ID": "tracker-client",
+        "SECURITY_OAUTH2_CLIENT_CLIENT_SECRET": "supersecret"
 ])

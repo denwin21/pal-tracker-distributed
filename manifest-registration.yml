@@ -8,6 +8,9 @@ applications:
   env:
     JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+ } }'
     MANAGEMENT_ENDPOINT_HEALTH_SHOWDETAILS: always
+    GRANT_TYPE: client_credentials
   services:
   - tracker-registration-database
   - tracker-service-registry
+  - tracker-sso
+
